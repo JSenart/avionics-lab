@@ -1,0 +1,15 @@
+.side-by-side {
+  display: flex;
+  align-items: center;
+}
+
+.side-by-side ol {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.side-by-side img {
+  flex: 1;
+  max-width: 100%;
+  height: auto;
+}
