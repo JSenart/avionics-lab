@@ -17,7 +17,7 @@ To get the software, just head over to the [download page](https://github.com/f4
 
 Go to the terminal and type the command
 ```bash
-$picha coco
+$
 ```
 > **Warning:** This is an important warning message. Pay attention to this!
 
