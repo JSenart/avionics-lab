@@ -87,7 +87,7 @@ Squelch - This option helps eliminate unwanted noise or weak signals when receiv
 
 
 
-## Listening to the COM Channel
+## COM Channel
 
 To start becoming familiar with SDRAngel, we'll begin by tuning into the COM channel.
 
@@ -104,14 +104,43 @@ Communication between aircraft and the ground control facility at Lisbon Airport
 
 These channels utilize AM modulation. Consequently, you'll need to select the "AM Demodulator" to listen to this type of signal. After picking one of these frequencies, you'll need to adjust various parameters and await a communication signal on the chosen channel. Experiment with changing these parameters to gain an understanding of their impact on the received results.
 
+In the image below, you can see a typical communication in one of these channels.
+
+<img src="figures/Com_typical.jpg" alt="Image Description" style="width:700px;">
+
 ## NDB
 
-NDBs are "non-directional" because they do not provide directional information like VOR (VHF Omni-Directional Range) or GPS (Global Positioning System) systems. Instead, an NDB only provides a reference point and distance information.
+A non-directional beacon (NDB) or non-directional radio beacon is a radio beacon which does not include inherent directional information. These are in contrast to directional information systems like VOR (VHF Omni-Directional Range) or GPS (Global Positioning System) systems. Instead, an NDB only provides a reference point and distance information.
+
+NDB signals follow the curvature of the Earth, so they can be received at much greater distances at lower altitudes, a major advantage over VOR. However, NDB signals are also affected more by atmospheric conditions, mountainous terrain, coastal refraction and electrical storms, particularly at long range.
+
 Aircraft equipped with ADF (Automatic Direction Finder) receivers can tune in to the NDB's frequency and determine the direction of the NDB relative to the aircraft's nose. By comparing this directional information with the known direction of the NDB station, pilots can determine their bearing from or to the NDB. NDBs are used for various purposes in aviation, including en route navigation, instrument approaches to airports, and providing fixes along airways.
 
 ## VOR
 
-VOR, which stands for VHF Omni-Directional Range, is a type of radio navigation system used primarily in aviation for aircraft navigation. It provides pilots with both direction and distance information, allowing them to determine their position and track along specific airways or routes. VOR signals are transmitted from ground-based radio beacons located at airports and other strategic locations.
+VOR, which stands for very high frequency Omni-Directional Range, is a type of radio navigation system used primarily in aviation for aircraft navigation. It provides pilots with both direction and distance information, allowing them to determine their position and track along specific airways or routes. VOR stations also broadcast the three letter identifier in Morse code. Because VOR signals have a range of about 200 miles, it is possible for an aircraft to receive multiple VOR signals.
+
+VOR signals are transmitted from ground-based radio beacons located at airports and other strategic locations.
+
+
+
+In the image below, you can see where the Lisbon VOR is located (in green) and what it looks like
+
+<img src="figures/Vor_location.jpg" alt="Image Description" style="width:700px;">
+
+<img src="figures/Vor.jpg" alt="Image Description" style="width:700px;">
+
+
+The Lisbon VOR signal works at 114.8 MHz. VOR navigation technology uses a ground-based antenna at a station to send a directional signal that rotates clockwise 30 times a second, or 360 degrees in azimuth. A reference signal is also emitted timed to be in phase with the directional signal as the directional signal passes magnetic north. This means we will have two modulated signals.
+
+Both modulations are done with a 30 Hz signal, but the phase is different. The phase of one of the modulation signals is dependent on the direction of transmission, while the phase of the other modulation signal is not, in order to serve as a reference. 
+
+The receiver will demodulate both signals, and measure the phase difference. The phase difference is indicative of the bearing from the VOR station to the receiver relative to magnetic north. This line of position is called the VOR radial.
+
+To demodulate we will use the SDRAngel plugin, "VOR Demodulator". This will automatically measure both phases and calculate the VOR radial. It will also give you the Morse code translation.
+
+Below you can see some information about the plugin:
+
 
 <img src="figures/Vor_dem.jpg" alt="Image Description" style="width:700px;">
 
@@ -135,19 +164,45 @@ Demodulated radial direction in degrees (unadjusted for magnetic declination). I
 9: Reference signal power in dB
 Magnitude of the received 30Hz FM reference signal in dB.
 
-10. Variable signal power in dB
+10: Variable signal power in dB
 Magnitude of the received 30Hz AM variable signal in dB.
 
-11. VOR identifier code (decoded)
+11: VOR identifier code (decoded)
 Demodulated identifier. If an identifier is received that is not 2 or 3 characters, it will be displayed in yellow else in white.
 
-12. VOR identifier code (Morse)
+12: VOR identifier code (Morse)
 Demodulated Morse code identifier. Colour coding is the same as for the decoded identifier.
 
+The signal should look like this:
+
+<img src="figures/Vor_signal.jpg" alt="Image Description" style="width:700px;">
+
+<img src="figures/Vor_direction.jpg" alt="Image Description" style="width:700px;">
+
+
+By changing the directional atena, you can see the changes in the VOR radial.
 
 ## ILS
 
-These are the signals used by aircraft to perform precision approaches and auto-lands.
+The instrument landing system (ILS) is a precision radio navigation system that provides short-range guidance to aircraft to allow them to approach a runway at night or in bad weather. In its original form, it allows an aircraft to approach until it is 61 m over the ground, within 800 m of the runway.
+
+ILS uses two directional radio signals, the localizer (108 to 112 MHz frequency), which provides horizontal guidance, and the glideslope (329.15 to 335 MHz frequency) for vertical guidance. The relationship between the aircraft's position and these signals is displayed on an aircraft instrument, often additional pointers in the attitude indicator.
+
+The image below shows the view of the primary component of the ILS, the localizer, which provides lateral guidance.
+
+<img src="figures/ILS_example.jpg" alt="Image Description" style="width:700px;">
+
+
+Both ILS signals, the localizer and the glideslope, combine two different frequency signals, at 90 Hz and 150 Hz. Using simple electronic filters, the original carrier and two sidebands can be separated and demodulated to extract the original amplitude-modulated 90 and 150 Hz signals. These are then averaged to produce two direct current (DC) signals. Each of these signals represents not the strength of the original signal, but the strength of the modulation relative to the carrier, which varies across the beam pattern.
+
+The two DC signals are then sent to a conventional voltmeter, with the 90 Hz output pulling the needle right and the other left. Along the centreline the two modulating tones of the sidebands will be cancelled out and both voltages will be zero, leaving the needle centered in the display.
+
+<img src="figures/ILS_localizer.png" alt="Image Description" style="width:700px;">
+
+<img src="figures/ILS_gauge.png" alt="Image Description" style="width:700px;">
+
+
+
 
 ## Step 3: Title of Step 3
 
